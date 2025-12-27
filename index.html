@@ -3,92 +3,172 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SkySense Weather Dashboard</title>
-
-  
-
-  <!-- Google font link from step 2.3 -->
-  <link rel="stylesheet" href="style.css" />
+  <title>SkySense Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="app">
-    <!-- Left vertical sidebar -->
+  <div class="app-shell">
+    <!-- Sidebar -->
     <aside class="sidebar">
-      <div class="sidebar-logo">
-        <!-- Optional logo icon -->
-        <span class="logo-icon">⚡</span>
-        <span class="logo-text">SkySense</span>
-      </div>
-      <nav class="sidebar-nav">
-        <button class="nav-btn active">🏠</button>
-        <button class="nav-btn">📍</button>
-        <button class="nav-btn">📅</button>
-        <button class="nav-btn">⚙️</button>
-      </nav>
-      <div class="sidebar-bottom">
-        <button class="nav-btn">⇧</button>
-      </div>
+      <img src="assets/images/side.svg" alt="Sidebar" class="sidebar-img">
     </aside>
 
-    <!-- Main content area -->
+    <!-- Main Content -->
     <main class="main">
-      <!-- Top bar: location + user -->
+      <!-- Top Bar -->
       <header class="topbar">
-        <div class="location-pill">
-          <span class="location-dot"></span>
-          <span class="location-name" id="location-name">Howrah</span>
-        </div>
         <div class="user-pill">
-          <div class="user-avatar"></div>
+          <img src="assets/images/username.svg" alt="User" class="user-icon">
           <span class="user-name">User Name</span>
+          <span class="chevron"></span>
         </div>
       </header>
 
-      <!-- Grid layout for cards -->
+      <!-- Dashboard Grid -->
       <section class="dashboard">
-        <!-- Today main card -->
-        <section class="card card-today">
-          <div class="card-today-left">
-            <p class="day-name" id="day-name">Monday</p>
-            <p class="date-text" id="date-text">24 Dec, 2023</p>
-            <div class="temp-main">
-              <span class="temp-value" id="temp-now">26</span>
-              <span class="temp-unit">°C</span>
+        <!-- Today Weather Card -->
+        <div class="card today-card">
+          <div class="today-main">
+            <div class="location-pill">
+              <span>Howrah</span>
             </div>
-            <p class="temp-range">
-              High: <span id="temp-high">27</span> Low: <span id="temp-low">10</span>
-            </p>
-            <p class="weather-summary" id="weather-summary">Cloudy</p>
-          </div>
-          <div class="card-today-right">
-            <div class="icon-large">
-              <!-- weather icon -->
-              <img id="weather-icon" src="assets/images/icon-cloudy.svg" alt="Weather icon" />
+            <h1>Monday</h1>
+            <div class="date">24 Dec, 2023</div>
+            <div class="temperature-row">
+              <div class="temperature-value">26C</div>
+              <div class="hi-low">High: 27 Low: 10</div>
             </div>
-            <p class="feels-like">
-              Feels like <span id="feels-like">26</span>°C
-            </p>
+            <div class="condition-label">Cloudy</div>
+            <div class="feels-like">Feels like 26</div>
+            <div class="today-bottom-icon">
+              <img src="assets/images/icon-cloudy.svg" alt="Cloudy">
+            </div>
           </div>
-        </section>
+          <div class="today-right">
+            <div class="unit-toggle">
+              <div class="unit-btn">F</div>
+              <div class="unit-btn active">C</div>
+            </div>
+            <div class="weather-illustration">
+              <img src="assets/images/icon-sun.svg" alt="Sun">
+            </div>
+          </div>
+        </div>
 
-        <!-- Today highlight card (wind, rainfall, pressure, air quality, visibility) -->
-        <section class="card card-highlights">
-          <!-- You will fill inner HTML later -->
-        </section>
+        <!-- Highlights Card -->
+        <div class="card highlight-card">
+          <div class="highlight-header">
+            <h2>Today Highlight</h2>
+          </div>
+          <div class="highlights-grid">
+            <div class="mini-card">
+              <div class="mini-label">Wind</div>
+              <img src="assets/images/icon-wind.svg" alt="Wind" class="mini-icon">
+              <div class="mini-main">9.7 km/h</div>
+              <div class="mini-sub">N  E  S</div>
+            </div>
+            <div class="mini-card">
+              <div class="mini-label">Rainfall</div>
+              <img src="assets/images/icon-rainfall.svg" alt="Rainfall" class="mini-icon">
+              <div class="mini-main">1.8 mm</div>
+              <div class="mini-sub">in last hour</div>
+            </div>
+            <div class="mini-card">
+              <div class="mini-label">Pressure</div>
+              <div class="mini-main">1012 hPa</div>
+              <div class="mini-sub">Stable</div>
+            </div>
+            <div class="mini-card" style="grid-column: span 2;">
+              <div class="mini-label">Air Quality</div>
+              <div class="mini-main">3 � Low Health Risk</div>
+              <div class="air-quality-bar"><span></span></div>
+            </div>
+            <div class="mini-card">
+              <div class="mini-label">Visibility</div>
+              <div class="mini-main">8 km</div>
+              <div class="mini-sub">Clear sky</div>
+            </div>
+          </div>
+        </div>
 
-        <!-- Today/week forecast + sunrise/sunset -->
-        <section class="card card-forecast">
-          <!-- Will fill later -->
-        </section>
+        <!-- Hourly & Sunrise Card -->
+        <div class="card today-week">
+          <div class="today-week-header">
+            <span>Today / Week</span>
+          </div>
+          <div class="today-week-main">
+            <div class="hourly-strip">
+              <div class="hour-pill">
+                <div class="time">1 PM</div>
+                <img src="assets/images/icon-sun.svg" alt="Sun" class="hour-icon">
+                <div class="temp">20</div>
+              </div>
+              <div class="hour-pill">
+                <div class="time">2 PM</div>
+                <img src="assets/images/icon-sun.svg" alt="Sun" class="hour-icon">
+                <div class="temp">21</div>
+              </div>
+              <div class="hour-pill">
+                <div class="time">3 PM</div>
+                <img src="assets/images/icon-sun.svg" alt="Sun" class="hour-icon">
+                <div class="temp">20</div>
+              </div>
+              <div class="hour-pill">
+                <div class="time">4 PM</div>
+                <img src="assets/images/icon-sun.svg" alt="Sun" class="hour-icon">
+                <div class="temp">19</div>
+              </div>
+              <div class="hour-pill">
+                <div class="time">5 PM</div>
+                <img src="assets/images/icon-sun.svg" alt="Sun" class="hour-icon">
+                <div class="temp">18</div>
+              </div>
+              <div class="hour-pill">
+                <div class="time">6 PM</div>
+                <img src="assets/images/icon-sun.svg" alt="Sun" class="hour-icon">
+                <div class="temp">18</div>
+              </div>
+            </div>
+            <div class="sunrise-card">
+              <div class="sunrise-row">
+                <div>
+                  <div class="sunrise-label">Sunrise</div>
+                  <div class="sunrise-value">6:45 AM</div>
+                </div>
+                <div>
+                  <div class="sunrise-label">Sunset</div>
+                  <div class="sunrise-value">5:30 PM</div>
+                </div>
+              </div>
+              <div class="tomorrow-strip">
+                <div class="tomorrow-left">
+                  <span class="tomorrow-label">Tomorrow</span>
+                  <span>Rainy</span>
+                </div>
+                <div class="tomorrow-right">
+                  <span>14</span>
+                  <img src="assets/images/icon-rain.svg" alt="Rain" class="tomorrow-icon">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        <!-- Temperature map card -->
-        <section class="card card-map">
-          <!-- Will fill later -->
-        </section>
+        <!-- Temperature Map Card -->
+        <div class="card temp-map-card">
+          <h2>Temperature</h2>
+          <div class="map-box">
+            <div class="map-inner">
+              <div class="map-pin">
+                <span class="value">21</span>
+                <span class="label">My Location</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
     </main>
   </div>
-
-  <script src="js/app.js"></script>
 </body>
 </html>
