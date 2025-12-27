@@ -1,45 +1,181 @@
-const tgl = document.getElementById('temp-toggle');
-let isC = true;
+class WxApp {
+  constructor() {
+    this.key = 'e2171af7c43b9eb3f9417fc352f3d504';
+    this.loc = 'Kolkata';
+    this.lat = 22.5726;
+    this.lon = 88.3639;
+    this.isC = true;
+    this.data = null;
+    this.useMockData = false;
+    this.init();
+  }
 
-const tVals = {
-  main: 26,
-  high: 27,
-  low: 10,
-  feels: 26,
-  hourly: [20, 21, 20, 19, 18, 18],
-  tmr: 14
-};
+  async init() {
+    const tgl = document.getElementById('temp-toggle');
+    if (tgl) {
+      tgl.addEventListener('change', () => {
+        this.isC = tgl.checked;
+        this.upT();
+      });
+    }
+    await this.fetchAll();
+    this.upT();
+  }
 
-tgl.addEventListener('change', () => {
-  isC = tgl.checked;
-  updateTemps();
-});
+  async fetchAll() {
+    try {
+      const wUrl = `https://api.openweathermap.org/data/2.5/weather?q=${this.loc}&units=metric&appid=${this.key}`;
+      const fUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${this.loc}&units=metric&appid=${this.key}`;
+      const aUrl = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${this.lat}&lon=${this.lon}&appid=${this.key}`;
 
-function updateTemps() {
-  const unit = isC ? 'C' : 'F';
-  
-  const tv = document.querySelector('.temp-value');
-  const tu = document.querySelector('.temp-unit');
-  const mainT = isC ? tVals.main : Math.round((tVals.main * 9/5) + 32);
-  tv.textContent = mainT;
-  tu.textContent = unit;
+      const [wRes, fRes, aRes] = await Promise.all([
+        fetch(wUrl),
+        fetch(fUrl),
+        fetch(aUrl)
+      ]);
 
-  const hl = document.querySelector('.hi-low');
-  const h = isC ? tVals.high : Math.round((tVals.high * 9/5) + 32);
-  const l = isC ? tVals.low : Math.round((tVals.low * 9/5) + 32);
-  hl.textContent = `High: ${h}° Low: ${l}°`;
+      // If API returns 401 or other errors, use mock data
+      if (!wRes.ok || !fRes.ok || !aRes.ok) {
+        console.warn('API Error - Using mock data. Get a free API key from: https://openweathermap.org/api');
+        this.useMockData = true;
+        this.data = this.getMockData();
+        this.upMain();
+        return;
+      }
 
-  const fl = document.querySelector('.feels-like');
-  const f = isC ? tVals.feels : Math.round((tVals.feels * 9/5) + 32);
-  fl.textContent = `Feels like ${f}°`;
+      const wData = await wRes.json();
+      const fData = await fRes.json();
+      const aData = await aRes.json();
 
-  const hTemps = document.querySelectorAll('.hour-pill .temp');
-  hTemps.forEach((el, i) => {
-    const t = isC ? tVals.hourly[i] : Math.round((tVals.hourly[i] * 9/5) + 32);
-    el.textContent = t + '°';
-  });
+      this.data = {
+        cur: wData,
+        fct: fData,
+        aqi: aData.list[0]
+      };
 
-  const tmrT = document.querySelector('.tomorrow-right span:first-child');
-  const tmr = isC ? tVals.tmr : Math.round((tVals.tmr * 9/5) + 32);
-  tmrT.textContent = tmr + '°';
+      this.upMain();
+    } catch (e) {
+      console.error('Weather fetch error:', e);
+      console.warn('Using mock data. Get a free API key from: https://openweathermap.org/api');
+      this.useMockData = true;
+      this.data = this.getMockData();
+      this.upMain();
+    }
+  }
+
+  getMockData() {
+    return {
+      cur: {
+        name: 'Kolkata',
+        main: {
+          temp: 17,
+          temp_max: 25,
+          temp_min: 12,
+          feels_like: 18,
+          pressure: 1014
+        },
+        weather: [{ main: 'Cloudy', icon: '04d' }],
+        wind: { speed: 12 },
+        rain: { '1h': 1.8 },
+        visibility: 8000
+      },
+      fct: {
+        list: [
+          { main: { temp: 20 }, weather: [{ icon: '01d' }] },
+          { main: { temp: 21 }, weather: [{ icon: '01d' }] },
+          { main: { temp: 20 }, weather: [{ icon: '01d' }] },
+          { main: { temp: 19 }, weather: [{ icon: '02d' }] },
+          { main: { temp: 18 }, weather: [{ icon: '02d' }] },
+          { main: { temp: 18 }, weather: [{ icon: '03d' }] }
+        ]
+      },
+      aqi: {
+        main: { aqi: 233 }
+      }
+    };
+  }
+
+  upMain() {
+    if (!this.data) return;
+    const d = this.data.cur;
+
+    const locEl = document.querySelector('.location-pill span');
+    const tv = document.querySelector('.temp-value');
+    const cond = document.querySelector('.condition-label');
+    const hl = document.querySelector('.hi-low');
+    const fl = document.querySelector('.feels-like');
+
+    if (locEl) locEl.textContent = d.name;
+    if (tv) tv.textContent = Math.round(d.main.temp);
+    if (cond) cond.textContent = d.weather[0].main;
+    if (hl) hl.textContent = `High: ${Math.round(d.main.temp_max)}° Low: ${Math.round(d.main.temp_min)}°`;
+    if (fl) fl.textContent = `Feels like ${Math.round(d.main.feels_like)}°`;
+
+    const mini = document.querySelectorAll('.mini-main');
+    if (mini[0]) mini[0].textContent = `${Math.round(d.wind.speed)} km/h`;
+    if (mini[1]) mini[1].textContent = `${(d.rain?.['1h'] || 0).toFixed(1)} mm`;
+    if (mini[2]) mini[2].textContent = `${d.main.pressure} hPa`;
+
+    const ai = this.data.aqi.main.aqi;
+    const aTxt = this.aqiTxt(ai);
+    if (mini[3]) mini[3].textContent = `${ai} ${aTxt}`;
+
+    const aBar = document.querySelector('.air-quality-bar span');
+    if (aBar) aBar.style.width = `${(ai / 5) * 100}%`;
+
+    if (mini[4]) mini[4].textContent = `${(d.visibility / 1000).toFixed(1)} km`;
+
+    const mapVal = document.querySelector('.map-pin .value');
+    if (mapVal) mapVal.textContent = Math.round(d.main.temp);
+
+    this.upH();
+  }
+
+  aqiTxt(i) {
+    const lv = ['Good', 'Fair', 'Moderate', 'Poor', 'Very Poor'];
+    return lv[Math.min(i - 1, 4)] + ' Health Risk';
+  }
+
+  upH() {
+    if (!this.data) return;
+    const list = this.data.fct.list;
+    const hT = document.querySelectorAll('.hour-pill .temp');
+
+    for (let i = 0; i < 6 && i < list.length && i < hT.length; i++) {
+      const f = list[i];
+      const temp = this.isC ? Math.round(f.main.temp) : Math.round((f.main.temp * 9 / 5) + 32);
+      hT[i].textContent = `${temp}°`;
+      const ico = hT[i].closest('.hour-pill')?.querySelector('.hour-icon');
+      if (ico) {
+        ico.src = `https://openweathermap.org/img/wn/${f.weather[0].icon}@2x.png`;
+      }
+    }
+  }
+
+  upT() {
+    if (!this.data) return;
+    const d = this.data.cur;
+    const u = this.isC ? 'C' : 'F';
+    const toF = c => Math.round((c * 9 / 5) + 32);
+
+    const tv = document.querySelector('.temp-value');
+    const tu = document.querySelector('.temp-unit');
+    const hl = document.querySelector('.hi-low');
+    const fl = document.querySelector('.feels-like');
+
+    const mainT = this.isC ? d.main.temp : toF(d.main.temp);
+    if (tv) tv.textContent = Math.round(mainT);
+    if (tu) tu.textContent = u;
+
+    const hi = this.isC ? d.main.temp_max : toF(d.main.temp_max);
+    const lo = this.isC ? d.main.temp_min : toF(d.main.temp_min);
+    if (hl) hl.textContent = `High: ${Math.round(hi)}° Low: ${Math.round(lo)}°`;
+
+    const feel = this.isC ? d.main.feels_like : toF(d.main.feels_like);
+    if (fl) fl.textContent = `Feels like ${Math.round(feel)}°`;
+
+    this.upH();
+  }
 }
+
+new WxApp();
