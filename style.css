@@ -30,8 +30,6 @@ body {
   justify-content: stretch;
   align-items: stretch;
   overflow: hidden;
-  margin: 0;
-  padding: 0;
 }
 
 .app-shell {
@@ -43,7 +41,6 @@ body {
   gap: 24px;
 }
 
-/* Sidebar */
 .sidebar {
   background: transparent;
   border-radius: 20px;
@@ -60,14 +57,12 @@ body {
   object-fit: contain;
 }
 
-/* Main area grid */
 .main {
   display: grid;
   grid-template-rows: 64px minmax(0, 1fr);
   gap: 16px;
 }
 
-/* Top bar */
 .topbar {
   display: flex;
   justify-content: flex-end;
@@ -100,7 +95,6 @@ body {
   color: var(--text-muted);
 }
 
-/* Dashboard grid */
 .dashboard {
   display: grid;
   grid-template-columns: 2.2fr 2fr;
@@ -117,7 +111,6 @@ body {
   backdrop-filter: blur(10px);
 }
 
-/* Today main card */
 .today-card {
   display: grid;
   grid-template-columns: minmax(0, 2fr) 170px;
@@ -204,11 +197,11 @@ body {
   position: relative;
 }
 
-.toggle-checkbox {
+.toggle-chk {
   display: none;
 }
 
-.toggle-label {
+.toggle-lbl {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -222,7 +215,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.toggle-label::before {
+.toggle-lbl::before {
   content: '';
   position: relative;
   width: 24px;
@@ -243,16 +236,16 @@ body {
   transition: opacity 0.3s ease;
 }
 
-.toggle-checkbox:checked + .toggle-label {
+.toggle-chk:checked + .toggle-lbl {
   background: rgba(0, 0, 0, 0.3);
 }
 
-.toggle-checkbox:checked + .toggle-label::before {
+.toggle-chk:checked + .toggle-lbl::before {
   left: 30px;
   background: #8258ff;
 }
 
-.toggle-checkbox:checked + .toggle-label .toggle-text {
+.toggle-chk:checked + .toggle-lbl .toggle-text {
   opacity: 1;
 }
 
@@ -303,7 +296,6 @@ body {
   object-fit: contain;
 }
 
-/* Today highlight right column top card */
 .highlight-card {
   display: grid;
   grid-template-rows: auto 1fr;
@@ -377,7 +369,6 @@ body {
   background: linear-gradient(90deg, #4caf50, #ffb300, #ef5350);
 }
 
-/* Bottom row grid */
 .today-week {
   display: grid;
   grid-template-rows: 40px minmax(0, 1fr);
@@ -539,13 +530,11 @@ body {
   color: #555;
 }
 
-/* Responsive */
 @media (max-width: 1024px) {
   .app-shell {
     grid-template-columns: 64px minmax(0, 1fr);
     padding: 16px;
   }
-
   .dashboard {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto;
@@ -557,15 +546,12 @@ body {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto 1fr;
   }
-
   .sidebar {
     display: none;
   }
-
   .today-card {
     grid-template-columns: 1fr;
   }
-
   .today-week-main {
     grid-template-columns: 1fr;
   }

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SkySense Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -47,8 +47,8 @@
           </div>
           <div class="today-right">
             <div class="unit-toggle">
-              <input type="checkbox" id="temp-toggle" class="toggle-checkbox" checked>
-              <label for="temp-toggle" class="toggle-label">
+              <input type="checkbox" id="temp-toggle" class="toggle-chk" checked>
+              <label for="temp-toggle" class="toggle-lbl">
                 <span class="toggle-text">    °C</span>
               </label>
             </div>
@@ -171,58 +171,6 @@
     </main>
   </div>
 
-  <script>
-    const toggle = document.getElementById('temp-toggle');
-    let isCelsius = true;
-
-    // Main temperature values (in Celsius)
-    const tempValues = {
-      main: 26,
-      high: 27,
-      low: 10,
-      feelsLike: 26,
-      hourly: [20, 21, 20, 19, 18, 18],
-      tomorrow: 14
-    };
-
-    toggle.addEventListener('change', function() {
-      isCelsius = this.checked;
-      updateTemperatures();
-    });
-
-    function updateTemperatures() {
-      const unit = isCelsius ? 'C' : 'F';
-      
-      // Update main temperature
-      const tempValue = document.querySelector('.temp-value');
-      const tempUnit = document.querySelector('.temp-unit');
-      const mainTemp = isCelsius ? tempValues.main : Math.round((tempValues.main * 9/5) + 32);
-      tempValue.textContent = mainTemp;
-      tempUnit.textContent = unit;
-
-      // Update hi-low
-      const hiLow = document.querySelector('.hi-low');
-      const high = isCelsius ? tempValues.high : Math.round((tempValues.high * 9/5) + 32);
-      const low = isCelsius ? tempValues.low : Math.round((tempValues.low * 9/5) + 32);
-      hiLow.textContent = `High: ${high}° Low: ${low}°`;
-
-      // Update feels like
-      const feelsLike = document.querySelector('.feels-like');
-      const feels = isCelsius ? tempValues.feelsLike : Math.round((tempValues.feelsLike * 9/5) + 32);
-      feelsLike.textContent = `Feels like ${feels}°`;
-
-      // Update hourly temps
-      const hourlyTemps = document.querySelectorAll('.hour-pill .temp');
-      hourlyTemps.forEach((elem, index) => {
-        const temp = isCelsius ? tempValues.hourly[index] : Math.round((tempValues.hourly[index] * 9/5) + 32);
-        elem.textContent = temp + '°';
-      });
-
-      // Update tomorrow temp
-      const tomorrowTemp = document.querySelector('.tomorrow-right span:first-child');
-      const tomorrow = isCelsius ? tempValues.tomorrow : Math.round((tempValues.tomorrow * 9/5) + 32);
-      tomorrowTemp.textContent = tomorrow + '°';
-    }
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>
