@@ -1,6 +1,6 @@
 class WxApp {
   constructor() {
-    this.key = 'e2171af7c43b9eb3f9417fc352f3d504';
+    this.key = this.getApiKey();
     this.loc = 'Kolkata';
     this.lat = 22.5726;
     this.lon = 88.3639;
@@ -8,6 +8,13 @@ class WxApp {
     this.data = null;
     this.useMockData = false;
     this.init();
+  }
+
+  getApiKey() {
+    if (window.__ENV && window.__ENV.OPENWEATHER_API_KEY) {
+      return window.__ENV.OPENWEATHER_API_KEY;
+    }
+    return 'e2171af7c43b9eb3f9417fc352f3d504';
   }
 
   async init() {
@@ -23,6 +30,7 @@ class WxApp {
   }
 
   async fetchAll() {
+    console.log('🌐 API Called');
     try {
       const wUrl = `https://api.openweathermap.org/data/2.5/weather?q=${this.loc}&units=metric&appid=${this.key}`;
       const fUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${this.loc}&units=metric&appid=${this.key}`;
@@ -34,9 +42,8 @@ class WxApp {
         fetch(aUrl)
       ]);
 
-      // If API returns 401 or other errors, use mock data
       if (!wRes.ok || !fRes.ok || !aRes.ok) {
-        console.warn('API Error - Using mock data. Get a free API key from: https://openweathermap.org/api');
+        console.log('❌ API Data Not Fetched - Loading Default Data');
         this.useMockData = true;
         this.data = this.getMockData();
         this.upMain();
@@ -53,10 +60,10 @@ class WxApp {
         aqi: aData.list[0]
       };
 
+      console.log('✅ API Data Successfully Fetched');
       this.upMain();
     } catch (e) {
-      console.error('Weather fetch error:', e);
-      console.warn('Using mock data. Get a free API key from: https://openweathermap.org/api');
+      console.log('❌ API Data Not Fetched - Loading Default Data');
       this.useMockData = true;
       this.data = this.getMockData();
       this.upMain();

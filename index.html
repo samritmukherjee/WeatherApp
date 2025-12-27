@@ -6,6 +6,36 @@
   <title>SkySense Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  
+  <!-- Load Environment Variables -->
+  <script>
+    console.log('[INIT] Loading environment variables from env/.env');
+    (async () => {
+      try {
+        const envFile = './env/.env';
+        const response = await fetch(envFile);
+        const text = await response.text();
+        window.__ENV = {};
+        
+        const lines = text.split('\n');
+        lines.forEach(line => {
+          const trimmed = line.trim();
+          if (trimmed && !trimmed.startsWith('#')) {
+            const [key, value] = trimmed.split('=');
+            if (key && value) {
+              window.__ENV[key.trim()] = value.trim();
+              console.log(`[ENV] Loaded: ${key.trim()}`);
+            }
+          }
+        });
+        
+        console.log('[INIT] Environment variables loaded:', window.__ENV);
+      } catch (e) {
+        console.warn('[ERROR] Failed to load env/.env file:', e);
+        console.warn('[WARNING] Using fallback API key. Make sure env/.env exists with OPENWEATHER_API_KEY');
+      }
+    })();
+  </script>
 </head>
 <body>
   <div class="app-shell">
