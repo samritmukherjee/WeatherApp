@@ -1,54 +1,47 @@
+/* Base reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Theme variables */
 :root {
   --bg-main: #050819;
-  --bg-card: #0c1022;
-  --bg-card-soft: #11152b;
+  --bg-card: rgba(15, 18, 50, 0.7);
+  --card-border: rgba(255, 255, 255, 0.08);
+
   --accent: #8258ff;
-  --accent-soft: #262a4b;
   --text-main: #f7f8ff;
   --text-muted: #9aa2c5;
-  --warning: #f9c74f;
-  --danger: #ff4d6a;
-  --card-border: rgba(255, 255, 255, 0.08);
-  --sidebar-bg: rgba(8, 12, 30, 0.85);
-  --card-bg: rgba(15, 18, 50, 0.7);
 }
 
+/* Page body */
 body {
-  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: url('assets/images/bg-main.png') center/cover no-repeat fixed,
-              radial-gradient(circle at top, #1b1d3f 0, #020414 55%, #000000 100%);
+  font-family: "Poppins", system-ui, sans-serif;
+  background:
+    url("assets/images/bg-main.png") center / cover no-repeat fixed,
+    radial-gradient(circle at top, #1b1d3f 0%, #020414 55%, #000 100%);
   color: var(--text-main);
-  width: 100vw;
   min-height: 100vh;
-  display: flex;
-  justify-content: stretch;
-  align-items: stretch;
+  width: 100vw;
   overflow-x: hidden;
 }
 
+/* App shell layout */
 .app-shell {
-  width: 100%;
   min-height: 100vh;
   padding: 24px;
   display: grid;
-  grid-template-columns: 80px minmax(0, 1fr);
+  grid-template-columns: 80px 1fr;
   gap: 24px;
 }
 
+/* Sidebar */
 .sidebar {
-  background: transparent;
-  border-radius: 20px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
 }
 
 .sidebar-img {
@@ -57,12 +50,14 @@ body {
   object-fit: contain;
 }
 
+/* Main content wrapper */
 .main {
   display: grid;
-  grid-template-rows: 64px minmax(0, 1fr);
+  grid-template-rows: 64px 1fr;
   gap: 16px;
 }
 
+/* Top bar */
 .topbar {
   display: flex;
   justify-content: flex-end;
@@ -70,14 +65,12 @@ body {
 }
 
 .user-pill {
-  background: rgba(7, 10, 34, 0.96);
-  border-radius: 30px;
-  padding: 10px 18px;
   display: flex;
   align-items: center;
   gap: 12px;
-  min-width: auto;
-  justify-content: flex-end;
+  padding: 10px 18px;
+  background: rgba(7, 10, 34, 0.96);
+  border-radius: 30px;
 }
 
 .user-icon {
@@ -87,7 +80,6 @@ body {
 
 .user-name {
   font-size: 14px;
-  color: var(--text-main);
 }
 
 .chevron {
@@ -95,50 +87,47 @@ body {
   color: var(--text-muted);
 }
 
+/* Dashboard grid */
 .dashboard {
   display: grid;
   grid-template-columns: 2.2fr 2fr;
-  grid-template-rows: 260px minmax(0, 1fr);
+  grid-template-rows: 260px 1fr;
   gap: 18px;
 }
 
+/* Common card style */
 .card {
-  background: var(--card-bg);
+  background: var(--bg-card);
   border-radius: 24px;
   padding: 22px 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   border: 1px solid var(--card-border);
   backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
+/* Today weather card */
 .today-card {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) 170px;
-  gap: 10px;
+  grid-template-columns: 2fr 170px;
   align-items: center;
 }
 
 .location-pill {
   display: inline-flex;
-  align-items: center;
   gap: 8px;
   padding: 6px 12px;
   border-radius: 999px;
-  background: rgba(100, 80, 200, 0.7);
-  color: #fff;
   font-size: 12px;
+  background: rgba(100, 80, 200, 0.7);
   margin-bottom: 18px;
-  border: 1px solid rgba(150, 120, 255, 0.3);
 }
 
 .today-main h1 {
   font-size: 32px;
-  margin-bottom: 4px;
   font-weight: 600;
-  word-break: break-word;
 }
 
-.today-main .date {
+.date {
   font-size: 13px;
   color: var(--text-muted);
   margin-bottom: 24px;
@@ -146,8 +135,8 @@ body {
 
 .temperature-row {
   display: flex;
-  align-items: baseline;
   gap: 18px;
+  align-items: baseline;
 }
 
 .temperature-value {
@@ -169,33 +158,12 @@ body {
 .feels-like {
   font-size: 12px;
   color: var(--text-muted);
-  margin-top: 4px;
 }
 
-.today-bottom-icon {
-  margin-top: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.today-bottom-icon img {
-  width: 28px;
-  height: 28px;
-  opacity: 0.7;
-}
-
-.today-right {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  height: 100%;
-}
-
+/* Unit toggle */
 .unit-toggle {
-  align-self: flex-end;
-  position: relative;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .toggle-checkbox {
@@ -203,181 +171,70 @@ body {
 }
 
 .toggle-label {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 56px;
   height: 28px;
   background: #151938;
   border-radius: 14px;
-  cursor: pointer;
   position: relative;
-  transition: all 0.3s ease;
+  cursor: pointer;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .toggle-label::before {
-  content: '';
-  position: absolute;
+  content: "";
   width: 24px;
   height: 24px;
-  border-radius: 50%;
   background: #f5f7ff;
-  transition: all 0.3s ease;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
   left: 2px;
-}
-
-.toggle-text {
-  position: relative;
-  z-index: 2;
-  font-size: 10px;
-  font-weight: 600;
-  color: #050819;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.toggle-checkbox:checked + .toggle-label {
-  background: rgba(130, 88, 255, 0.3);
+  transition: 0.3s;
 }
 
 .toggle-checkbox:checked + .toggle-label::before {
   left: 30px;
-  background: #8258ff;
+  background: var(--accent);
 }
 
-.toggle-checkbox:checked + .toggle-label .toggle-text {
-  opacity: 1;
-}
-
-.toggle-chk {
-  display: none;
-}
-
-.toggle-lbl {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 28px;
-  background: #151938;
-  border-radius: 14px;
-  cursor: pointer;
-  position: relative;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.toggle-lbl::before {
-  content: '';
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: #f5f7ff;
-  transition: all 0.3s ease;
-  left: 2px;
-}
-
-.toggle-chk:checked + .toggle-lbl {
-  background: rgba(130, 88, 255, 0.3);
-}
-
-.toggle-chk:checked + .toggle-lbl::before {
-  left: 30px;
-  background: #8258ff;
-}
-
-.unit-btn {
-  width: 24px;
-  height: 24px;
-  border-radius: 999px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--text-muted);
-}
-
-.unit-btn.active {
-  background: #f5f7ff;
-  color: #050819;
-  font-weight: 600;
-}
-
-.temp-value {
-  font-weight: 600;
-}
-
-.temp-unit {
-  font-size: 0.85em;
-  font-weight: 500;
-  margin-left: 2px;
-}
-
+/* Weather illustration */
 .weather-illustration {
-  margin-top: -8px;
   width: 110px;
   height: 110px;
   border-radius: 40px;
-  background: linear-gradient(135deg, rgba(25, 30, 80, 0.9) 0%, rgba(15, 20, 50, 0.8) 100%);
-  position: relative;
-  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    rgba(25, 30, 80, 0.9),
+    rgba(15, 20, 50, 0.8)
+  );
   display: flex;
   align-items: center;
   justify-content: center;
-  align-self: center;
 }
 
 .weather-illustration img {
   width: 70%;
-  height: 70%;
-  object-fit: contain;
 }
 
-.highlight-card {
-  display: grid;
-  grid-template-rows: auto 1fr;
-  gap: 12px;
-}
-
-.highlight-header h2 {
-  font-size: 16px;
-  font-weight: 500;
-}
-
+/* Highlight cards */
 .highlights-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-template-rows: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   gap: 8px;
 }
 
 .mini-card {
-  background: rgba(20, 25, 60, 0.6);
+  padding: 10px;
   border-radius: 14px;
-  padding: 9px 10px;
+  background: rgba(20, 25, 60, 0.6);
   border: 1px solid var(--card-border);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  backdrop-filter: blur(8px);
 }
 
 .mini-label {
   font-size: 9px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
   color: var(--text-muted);
-  margin-bottom: 3px;
-  font-weight: 500;
-}
-
-.mini-icon {
-  width: 24px;
-  height: 24px;
-  margin-bottom: 4px;
-  opacity: 0.8;
+  text-transform: uppercase;
 }
 
 .mini-main {
@@ -385,606 +242,50 @@ body {
   font-weight: 600;
 }
 
-.mini-sub {
-  font-size: 9px;
-  color: var(--text-muted);
-  margin-top: 1px;
-}
-
-.air-quality-bar {
-  width: 100%;
-  height: 3px;
-  border-radius: 999px;
-  background: #1c203b;
-  overflow: hidden;
-  margin: 6px 0 2px;
-}
-
-.air-quality-bar span {
-  display: block;
-  height: 100%;
-  width: 60%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, #4caf50, #ffb300, #ef5350);
-}
-
-.today-week {
-  display: grid;
-  grid-template-rows: 40px minmax(0, 1fr);
-  gap: 16px;
-}
-
-.today-week-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  font-size: 15px;
-}
-
-.today-week-main {
-  display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-  gap: 16px;
-  align-items: stretch;
-}
-
-.hourly-strip {
-  background: rgba(12, 15, 40, 0.6);
-  border-radius: 20px;
-  padding: 12px;
-  display: flex;
-  gap: 10px;
-  overflow: hidden;
-  border: 1px solid var(--card-border);
-  backdrop-filter: blur(8px);
-}
-
-.hour-pill {
-  flex: 1;
-  min-width: 60px;
-  background: rgba(25, 30, 70, 0.5);
-  border-radius: 16px;
-  padding: 8px 6px;
-  text-align: center;
-  font-size: 11px;
-  color: var(--text-muted);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.hour-icon {
-  width: 20px;
-  height: 20px;
-  margin: 4px auto;
-  display: block;
-}
-
-.hour-pill .temp {
-  font-size: 11px;
-  color: var(--text-main);
-}
-
-.sunrise-card {
-  background: rgba(12, 15, 40, 0.6);
-  border-radius: 20px;
-  padding: 14px 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border: 1px solid var(--card-border);
-  backdrop-filter: blur(8px);
-}
-
-.sunrise-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
-}
-
-.sunrise-label {
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
-.sunrise-value {
-  font-size: 18px;
-  font-weight: 500;
-}
-
-.tomorrow-strip {
-  margin-top: 12px;
-  background: linear-gradient(135deg, rgba(20, 30, 80, 0.5) 0%, rgba(15, 25, 60, 0.5) 100%);
-  border-radius: 20px;
-  padding: 12px 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 13px;
-  border: 1px solid var(--card-border);
-}
-
-.tomorrow-label {
-  color: var(--text-muted);
-  font-size: 11px;
-}
-
-.tomorrow-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.tomorrow-icon {
-  width: 24px;
-  height: 24px;
-}
-
-.temp-map-card {
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
-  gap: 10px;
-}
-
-.temp-map-card h2 {
-  font-size: 15px;
-  font-weight: 500;
-}
-
-.map-box {
-  border-radius: 20px;
-  background: radial-gradient(circle at 20% 20%, #ffd66b, #f4b946 40%, #cc7e39 65%, #644439 100%);
-  position: relative;
-  overflow: hidden;
-}
-
-.map-inner {
-  position: absolute;
-  inset: 16px;
-  border-radius: 16px;
-  border: 1px solid rgba(0,0,0,0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #111;
-  font-weight: 600;
-  font-size: 16px;
-  background: radial-gradient(circle at 60% 20%, rgba(255,255,255,0.25), transparent 55%);
-}
-
-.map-pin {
-  background: #fff;
-  border-radius: 999px;
-  padding: 6px 12px;
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-  box-shadow: 0 10px 26px rgba(0,0,0,0.45);
-}
-
-.map-pin .value {
-  font-size: 18px;
-}
-
-.map-pin .label {
-  font-size: 11px;
-  color: #555;
-}
-
+/* Tablet responsiveness */
 @media (max-width: 1024px) {
   .app-shell {
-    grid-template-columns: 64px minmax(0, 1fr);
-    padding: 16px;
+    grid-template-columns: 64px 1fr;
   }
+
   .dashboard {
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
+  }
+
   .today-card {
     grid-template-columns: 1fr;
   }
-  .temperature-value {
-    font-size: 42px;
-  }
-  .today-right {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  .weather-illustration {
-    width: 90px;
-    height: 90px;
-  }
 }
 
+/* Mobile responsiveness */
 @media (max-width: 768px) {
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  html, body {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  body {
-    width: 100%;
-    overflow-x: hidden;
-  }
-
-  .app-shell {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto 1fr;
-    padding: 12px;
-    gap: 12px;
-  }
-
   .sidebar {
     display: none;
   }
 
-  .main {
-    grid-template-rows: 50px minmax(0, 1fr);
-    gap: 12px;
-  }
-
-  .topbar {
-    padding: 0 8px;
-  }
-
-  .user-pill {
-    padding: 8px 12px;
-    font-size: 12px;
-  }
-
-  .user-icon {
-    width: 20px;
-    height: 20px;
-  }
-
-  .user-name {
-    display: none;
-  }
-
-  .chevron {
-    display: none;
-  }
-
-  .dashboard {
+  .app-shell {
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto auto;
-    gap: 12px;
-  }
-
-  .card {
-    border-radius: 16px;
-    padding: 14px 12px;
-  }
-
-  .today-card {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    align-items: start;
-  }
-
-  .today-main h1 {
-    font-size: 24px;
-    margin-bottom: 2px;
-  }
-
-  .today-main .date {
-    font-size: 11px;
-    margin-bottom: 12px;
-  }
-
-  .temperature-row {
-    gap: 12px;
+    padding: 12px;
   }
 
   .temperature-value {
     font-size: 36px;
   }
 
-  .hi-low {
-    font-size: 11px;
-  }
-
-  .condition-label {
-    margin-top: 12px;
-    font-size: 14px;
-  }
-
-  .feels-like {
-    font-size: 11px;
-  }
-
-  .today-bottom-icon {
-    margin-top: 8px;
-  }
-
-  .today-bottom-icon img {
-    width: 24px;
-    height: 24px;
-  }
-
-  .today-right {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    height: auto;
-  }
-
-  .unit-toggle {
-    align-self: auto;
-  }
-
   .weather-illustration {
-    margin-top: 0;
     width: 80px;
     height: 80px;
-    border-radius: 32px;
-  }
-
-  .weather-illustration img {
-    width: 60%;
-    height: 60%;
-  }
-
-  .highlight-card {
-    gap: 8px;
-  }
-
-  .highlight-header h2 {
-    font-size: 14px;
-  }
-
-  .highlights-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: repeat(3, minmax(0, 1fr));
-    gap: 6px;
-  }
-
-  .mini-card {
-    padding: 8px;
-    border-radius: 12px;
-  }
-
-  .mini-label {
-    font-size: 8px;
-  }
-
-  .mini-main {
-    font-size: 13px;
-  }
-
-  .mini-sub {
-    font-size: 8px;
-  }
-
-  .today-week {
-    gap: 12px;
-  }
-
-  .today-week-header {
-    font-size: 14px;
-  }
-
-  .today-week-main {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .hourly-strip {
-    padding: 10px;
-    gap: 8px;
-    border-radius: 16px;
-  }
-
-  .hour-pill {
-    min-width: 50px;
-    padding: 6px 4px;
-    font-size: 10px;
-    border-radius: 12px;
-  }
-
-  .hour-icon {
-    width: 18px;
-    height: 18px;
-    margin: 3px auto;
-  }
-
-  .hour-pill .temp {
-    font-size: 10px;
-  }
-
-  .sunrise-card {
-    padding: 12px 12px;
-    border-radius: 16px;
-  }
-
-  .sunrise-row {
-    margin-bottom: 6px;
-  }
-
-  .sunrise-label {
-    font-size: 11px;
-  }
-
-  .sunrise-value {
-    font-size: 16px;
-  }
-
-  .tomorrow-strip {
-    margin-top: 8px;
-    padding: 10px 12px;
-    border-radius: 16px;
-    font-size: 12px;
-  }
-
-  .tomorrow-label {
-    font-size: 10px;
-  }
-
-  .tomorrow-icon {
-    width: 20px;
-    height: 20px;
-  }
-
-  .temp-map-card {
-    gap: 8px;
-  }
-
-  .temp-map-card h2 {
-    font-size: 14px;
-  }
-
-  .map-box {
-    border-radius: 16px;
-    min-height: 150px;
-  }
-
-  .map-inner {
-    inset: 12px;
-    font-size: 14px;
-  }
-
-  .map-pin {
-    padding: 4px 10px;
-    gap: 4px;
-  }
-
-  .map-pin .value {
-    font-size: 16px;
-  }
-
-  .map-pin .label {
-    font-size: 10px;
-  }
-
-  .toggle-label {
-    width: 48px;
-    height: 24px;
-  }
-
-  .toggle-label::before {
-    width: 20px;
-    height: 20px;
-  }
-
-  .toggle-checkbox:checked + .toggle-label::before {
-    left: 26px;
-  }
-
-  .location-pill {
-    padding: 4px 10px;
-    font-size: 11px;
-    margin-bottom: 10px;
   }
 }
 
+/* Small screens */
 @media (max-width: 480px) {
-  .app-shell {
-    padding: 8px;
-    gap: 8px;
-  }
-
-  .main {
-    gap: 8px;
-  }
-
-  .dashboard {
-    gap: 8px;
-  }
-
-  .card {
-    padding: 10px;
-    border-radius: 12px;
-  }
-
-  .user-pill {
-    padding: 6px 8px;
-  }
-
-  .today-main h1 {
-    font-size: 20px;
-  }
-
-  .today-main .date {
-    font-size: 10px;
-  }
-
   .temperature-value {
     font-size: 28px;
-  }
-
-  .temperature-row {
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .hi-low {
-    font-size: 10px;
-  }
-
-  .condition-label {
-    font-size: 12px;
-  }
-
-  .feels-like {
-    font-size: 10px;
   }
 
   .weather-illustration {
     width: 70px;
     height: 70px;
-    border-radius: 28px;
-  }
-
-  .highlights-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .mini-card {
-    padding: 6px;
-  }
-
-  .mini-label {
-    font-size: 7px;
-  }
-
-  .mini-main {
-    font-size: 12px;
-  }
-
-  .hour-pill {
-    min-width: 45px;
-    padding: 4px 2px;
-    font-size: 9px;
-  }
-
-  .hour-icon {
-    width: 16px;
-    height: 16px;
-  }
-
-  .sunrise-value {
-    font-size: 14px;
-  }
-
-  .map-box {
-    min-height: 120px;
-  }
-
-  .toggle-label {
-    width: 44px;
-    height: 22px;
-  }
-
-  .toggle-label::before {
-    width: 18px;
-    height: 18px;
-  }
-
-  .toggle-checkbox:checked + .toggle-label::before {
-    left: 24px
-    grid-template-columns: 1fr;
   }
 }
