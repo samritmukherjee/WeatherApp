@@ -36,19 +36,21 @@
             <h1>Monday</h1>
             <div class="date">24 Dec, 2023</div>
             <div class="temperature-row">
-              <div class="temperature-value">26C</div>
-              <div class="hi-low">High: 27 Low: 10</div>
+              <div class="temperature-value"><span class="temp-value">26</span>°<span class="temp-unit">C</span></div>
+              <div class="hi-low">High: 27° Low: 10°</div>
             </div>
             <div class="condition-label">Cloudy</div>
-            <div class="feels-like">Feels like 26</div>
+            <div class="feels-like">Feels like 26°</div>
             <div class="today-bottom-icon">
               <img src="assets/images/icon-cloudy.svg" alt="Cloudy">
             </div>
           </div>
           <div class="today-right">
             <div class="unit-toggle">
-              <div class="unit-btn">F</div>
-              <div class="unit-btn active">C</div>
+              <input type="checkbox" id="temp-toggle" class="toggle-checkbox" checked>
+              <label for="temp-toggle" class="toggle-label">
+                <span class="toggle-text">    °C</span>
+              </label>
             </div>
             <div class="weather-illustration">
               <img src="assets/images/icon-sun.svg" alt="Sun">
@@ -100,32 +102,32 @@
               <div class="hour-pill">
                 <div class="time">1 PM</div>
                 <img src="assets/images/icon-sun.svg" alt="Sun" class="hour-icon">
-                <div class="temp">20</div>
+                <div class="temp">20°</div>
               </div>
               <div class="hour-pill">
                 <div class="time">2 PM</div>
                 <img src="assets/images/icon-sun.svg" alt="Sun" class="hour-icon">
-                <div class="temp">21</div>
+                <div class="temp">21°</div>
               </div>
               <div class="hour-pill">
                 <div class="time">3 PM</div>
                 <img src="assets/images/icon-sun.svg" alt="Sun" class="hour-icon">
-                <div class="temp">20</div>
+                <div class="temp">20°</div>
               </div>
               <div class="hour-pill">
                 <div class="time">4 PM</div>
                 <img src="assets/images/icon-sun.svg" alt="Sun" class="hour-icon">
-                <div class="temp">19</div>
+                <div class="temp">19°</div>
               </div>
               <div class="hour-pill">
                 <div class="time">5 PM</div>
                 <img src="assets/images/icon-sun.svg" alt="Sun" class="hour-icon">
-                <div class="temp">18</div>
+                <div class="temp">18°</div>
               </div>
               <div class="hour-pill">
                 <div class="time">6 PM</div>
                 <img src="assets/images/icon-sun.svg" alt="Sun" class="hour-icon">
-                <div class="temp">18</div>
+                <div class="temp">18°</div>
               </div>
             </div>
             <div class="sunrise-card">
@@ -145,7 +147,7 @@
                   <span>Rainy</span>
                 </div>
                 <div class="tomorrow-right">
-                  <span>14</span>
+                  <span>14°</span>
                   <img src="assets/images/icon-rain.svg" alt="Rain" class="tomorrow-icon">
                 </div>
               </div>
@@ -168,5 +170,59 @@
       </section>
     </main>
   </div>
+
+  <script>
+    const toggle = document.getElementById('temp-toggle');
+    let isCelsius = true;
+
+    // Main temperature values (in Celsius)
+    const tempValues = {
+      main: 26,
+      high: 27,
+      low: 10,
+      feelsLike: 26,
+      hourly: [20, 21, 20, 19, 18, 18],
+      tomorrow: 14
+    };
+
+    toggle.addEventListener('change', function() {
+      isCelsius = this.checked;
+      updateTemperatures();
+    });
+
+    function updateTemperatures() {
+      const unit = isCelsius ? 'C' : 'F';
+      
+      // Update main temperature
+      const tempValue = document.querySelector('.temp-value');
+      const tempUnit = document.querySelector('.temp-unit');
+      const mainTemp = isCelsius ? tempValues.main : Math.round((tempValues.main * 9/5) + 32);
+      tempValue.textContent = mainTemp;
+      tempUnit.textContent = unit;
+
+      // Update hi-low
+      const hiLow = document.querySelector('.hi-low');
+      const high = isCelsius ? tempValues.high : Math.round((tempValues.high * 9/5) + 32);
+      const low = isCelsius ? tempValues.low : Math.round((tempValues.low * 9/5) + 32);
+      hiLow.textContent = `High: ${high}° Low: ${low}°`;
+
+      // Update feels like
+      const feelsLike = document.querySelector('.feels-like');
+      const feels = isCelsius ? tempValues.feelsLike : Math.round((tempValues.feelsLike * 9/5) + 32);
+      feelsLike.textContent = `Feels like ${feels}°`;
+
+      // Update hourly temps
+      const hourlyTemps = document.querySelectorAll('.hour-pill .temp');
+      hourlyTemps.forEach((elem, index) => {
+        const temp = isCelsius ? tempValues.hourly[index] : Math.round((tempValues.hourly[index] * 9/5) + 32);
+        elem.textContent = temp + '°';
+      });
+
+      // Update tomorrow temp
+      const tomorrowTemp = document.querySelector('.tomorrow-right span:first-child');
+      const tomorrow = isCelsius ? tempValues.tomorrow : Math.round((tempValues.tomorrow * 9/5) + 32);
+      tomorrowTemp.textContent = tomorrow + '°';
+    }
+  </script>
 </body>
 </html>

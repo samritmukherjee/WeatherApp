@@ -201,13 +201,59 @@ body {
 
 .unit-toggle {
   align-self: flex-end;
-  background: #151938;
-  border-radius: 999px;
-  padding: 3px;
+  position: relative;
+}
+
+.toggle-checkbox {
+  display: none;
+}
+
+.toggle-label {
   display: flex;
   align-items: center;
-  gap: 2px;
-  font-size: 11px;
+  justify-content: center;
+  width: 56px;
+  height: 28px;
+  background: #151938;
+  border-radius: 14px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.toggle-label::before {
+  content: '';
+  position: relative;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #f5f7ff;
+  transition: all 0.3s ease;
+  left: 2px;
+}
+
+.toggle-text {
+  position: relative;
+  z-index: 2;
+  font-size: 10px;
+  font-weight: 600;
+  color: #ffffff;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.toggle-checkbox:checked + .toggle-label {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.toggle-checkbox:checked + .toggle-label::before {
+  left: 30px;
+  background: #8258ff;
+}
+
+.toggle-checkbox:checked + .toggle-label .toggle-text {
+  opacity: 1;
 }
 
 .unit-btn {
@@ -227,8 +273,18 @@ body {
   font-weight: 600;
 }
 
+.temp-value {
+  font-weight: 600;
+}
+
+.temp-unit {
+  font-size: 0.85em;
+  font-weight: 500;
+  margin-left: 2px;
+}
+
 .weather-illustration {
-  margin-top: 1px;
+  margin-top: -8px;
   width: 110px;
   height: 110px;
   border-radius: 40px;
@@ -238,6 +294,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  align-self: center;
 }
 
 .weather-illustration img {
