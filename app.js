@@ -1,7 +1,7 @@
 class WxApp {
   constructor() {
     this.key = this.getApiKey();
-    this.loc = 'Kolkata';
+    this.loc = "Kolkata";
     this.lat = 22.5726;
     this.lon = 88.3639;
     this.isC = true;
@@ -12,15 +12,17 @@ class WxApp {
 
   getApiKey() {
     if (window.__ENV && window.__ENV.OPENWEATHER_API_KEY) {
+      console.log("Using API key from .env file");
       return window.__ENV.OPENWEATHER_API_KEY;
     }
-    return 'e2171af7c43b9eb3f9417fc352f3d504';
+    console.log("Using fallback API key");
+    return "e2171af7c43b9eb3f9417fc352f3d504";
   }
 
   async init() {
-    const tgl = document.getElementById('temp-toggle');
+    const tgl = document.getElementById("temp-toggle");
     if (tgl) {
-      tgl.addEventListener('change', () => {
+      tgl.addEventListener("change", () => {
         this.isC = tgl.checked;
         this.upT();
       });
@@ -30,7 +32,7 @@ class WxApp {
   }
 
   async fetchAll() {
-    console.log('🌐 API Called');
+    console.log("API Called");
     try {
       const wUrl = `https://api.openweathermap.org/data/2.5/weather?q=${this.loc}&units=metric&appid=${this.key}`;
       const fUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${this.loc}&units=metric&appid=${this.key}`;
@@ -43,7 +45,7 @@ class WxApp {
       ]);
 
       if (!wRes.ok || !fRes.ok || !aRes.ok) {
-        console.log('❌ API Data Not Fetched - Loading Default Data');
+        console.log("Failed to fetch API data");
         this.useMockData = true;
         this.data = this.getMockData();
         this.upMain();
@@ -60,10 +62,10 @@ class WxApp {
         aqi: aData.list[0]
       };
 
-      console.log('✅ API Data Successfully Fetched');
+      console.log("API Data Successfully Fetched");
       this.upMain();
     } catch (e) {
-      console.log('❌ API Data Not Fetched - Loading Default Data');
+      console.log("Failed to fetch API data");
       this.useMockData = true;
       this.data = this.getMockData();
       this.upMain();
@@ -73,7 +75,7 @@ class WxApp {
   getMockData() {
     return {
       cur: {
-        name: 'Kolkata',
+        name: "Kolkata",
         main: {
           temp: 17,
           temp_max: 25,
@@ -81,19 +83,19 @@ class WxApp {
           feels_like: 18,
           pressure: 1014
         },
-        weather: [{ main: 'Cloudy', icon: '04d' }],
+        weather: [{ main: "Cloudy", icon: "04d" }],
         wind: { speed: 12 },
-        rain: { '1h': 1.8 },
+        rain: { "1h": 1.8 },
         visibility: 8000
       },
       fct: {
         list: [
-          { main: { temp: 20 }, weather: [{ icon: '01d' }] },
-          { main: { temp: 21 }, weather: [{ icon: '01d' }] },
-          { main: { temp: 20 }, weather: [{ icon: '01d' }] },
-          { main: { temp: 19 }, weather: [{ icon: '02d' }] },
-          { main: { temp: 18 }, weather: [{ icon: '02d' }] },
-          { main: { temp: 18 }, weather: [{ icon: '03d' }] }
+          { main: { temp: 20 }, weather: [{ icon: "01d" }] },
+          { main: { temp: 21 }, weather: [{ icon: "01d" }] },
+          { main: { temp: 20 }, weather: [{ icon: "01d" }] },
+          { main: { temp: 19 }, weather: [{ icon: "02d" }] },
+          { main: { temp: 18 }, weather: [{ icon: "02d" }] },
+          { main: { temp: 18 }, weather: [{ icon: "03d" }] }
         ]
       },
       aqi: {
@@ -106,53 +108,51 @@ class WxApp {
     if (!this.data) return;
     const d = this.data.cur;
 
-    const locEl = document.querySelector('.location-pill span');
-    const tv = document.querySelector('.temp-value');
-    const cond = document.querySelector('.condition-label');
-    const hl = document.querySelector('.hi-low');
-    const fl = document.querySelector('.feels-like');
+    const locEl = document.querySelector(".location-pill span");
+    const tv = document.querySelector(".temp-value");
+    const hl = document.querySelector(".hi-low");
+    const fl = document.querySelector(".feels-like");
 
     if (locEl) locEl.textContent = d.name;
     if (tv) tv.textContent = Math.round(d.main.temp);
-    if (cond) cond.textContent = d.weather[0].main;
     if (hl) hl.textContent = `High: ${Math.round(d.main.temp_max)}° Low: ${Math.round(d.main.temp_min)}°`;
     if (fl) fl.textContent = `Feels like ${Math.round(d.main.feels_like)}°`;
 
-    const mini = document.querySelectorAll('.mini-main');
+    const mini = document.querySelectorAll(".mini-main");
     if (mini[0]) mini[0].textContent = `${Math.round(d.wind.speed)} km/h`;
-    if (mini[1]) mini[1].textContent = `${(d.rain?.['1h'] || 0).toFixed(1)} mm`;
+    if (mini[1]) mini[1].textContent = `${(d.rain?.["1h"] || 0).toFixed(1)} mm`;
     if (mini[2]) mini[2].textContent = `${d.main.pressure} hPa`;
 
     const ai = this.data.aqi.main.aqi;
     const aTxt = this.aqiTxt(ai);
     if (mini[3]) mini[3].textContent = `${ai} ${aTxt}`;
 
-    const aBar = document.querySelector('.air-quality-bar span');
+    const aBar = document.querySelector(".air-quality-bar span");
     if (aBar) aBar.style.width = `${(ai / 5) * 100}%`;
 
     if (mini[4]) mini[4].textContent = `${(d.visibility / 1000).toFixed(1)} km`;
 
-    const mapVal = document.querySelector('.map-pin .value');
+    const mapVal = document.querySelector(".map-pin .value");
     if (mapVal) mapVal.textContent = Math.round(d.main.temp);
 
     this.upH();
   }
 
   aqiTxt(i) {
-    const lv = ['Good', 'Fair', 'Moderate', 'Poor', 'Very Poor'];
-    return lv[Math.min(i - 1, 4)] + ' Health Risk';
+    const lv = ["Good", "Fair", "Moderate", "Poor", "Very Poor"];
+    return lv[Math.min(i - 1, 4)] + " Health Risk";
   }
 
   upH() {
     if (!this.data) return;
     const list = this.data.fct.list;
-    const hT = document.querySelectorAll('.hour-pill .temp');
+    const hT = document.querySelectorAll(".hour-pill .temp");
 
     for (let i = 0; i < 6 && i < list.length && i < hT.length; i++) {
       const f = list[i];
       const temp = this.isC ? Math.round(f.main.temp) : Math.round((f.main.temp * 9 / 5) + 32);
       hT[i].textContent = `${temp}°`;
-      const ico = hT[i].closest('.hour-pill')?.querySelector('.hour-icon');
+      const ico = hT[i].closest(".hour-pill")?.querySelector(".hour-icon");
       if (ico) {
         ico.src = `https://openweathermap.org/img/wn/${f.weather[0].icon}@2x.png`;
       }
@@ -162,13 +162,13 @@ class WxApp {
   upT() {
     if (!this.data) return;
     const d = this.data.cur;
-    const u = this.isC ? 'C' : 'F';
+    const u = this.isC ? "C" : "F";
     const toF = c => Math.round((c * 9 / 5) + 32);
 
-    const tv = document.querySelector('.temp-value');
-    const tu = document.querySelector('.temp-unit');
-    const hl = document.querySelector('.hi-low');
-    const fl = document.querySelector('.feels-like');
+    const tv = document.querySelector(".temp-value");
+    const tu = document.querySelector(".temp-unit");
+    const hl = document.querySelector(".hi-low");
+    const fl = document.querySelector(".feels-like");
 
     const mainT = this.isC ? d.main.temp : toF(d.main.temp);
     if (tv) tv.textContent = Math.round(mainT);

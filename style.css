@@ -113,7 +113,6 @@ body {
   height: 100%;
 }
 
-/* Toggle Switch */
 .toggle-checkbox { display: none; }
 .toggle-label {
   display: flex;
@@ -156,7 +155,6 @@ body {
 
 .weather-icon { width: 85px; height: 85px; opacity: 0.8; }
 
-/* Highlights Section */
 .highlight-card { display: grid; grid-template-rows: auto 1fr; gap: 12px; }
 .highlight-header h2 { font-size: 16px; font-weight: 500; }
 .highlights-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
@@ -186,7 +184,6 @@ body {
   background: linear-gradient(90deg, #4caf50, #ffb300, #ef5350);
 }
 
-/* Hourly & Sunrise */
 .today-week { display: grid; grid-template-rows: 40px 1fr; gap: 16px; }
 .today-week-main { display: grid; grid-template-columns: 1.6fr 1fr; gap: 16px; }
 
@@ -236,7 +233,6 @@ body {
   border: 1px solid var(--card-border);
 }
 
-/* Map Section */
 .temp-map-card { display: grid; grid-template-rows: auto 1fr; gap: 10px; }
 .map-box { 
   border-radius: 20px;
@@ -263,7 +259,6 @@ body {
 .map-pin .value { font-size: 18px; font-weight: 600; }
 .map-pin .label { font-size: 11px; color: #555; }
 
-/* Responsiveness */
 @media (max-width: 1024px) {
   .app-shell { grid-template-columns: 64px 1fr; padding: 16px; }
   .dashboard { grid-template-columns: 1fr; grid-template-rows: auto; }
