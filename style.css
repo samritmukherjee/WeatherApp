@@ -118,40 +118,59 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 62px;
-  height: 28px;
-  background: #151938;
-  border-radius: 14px;
+  width: 72px;
+  height: 36px;
+  background: linear-gradient(135deg, #1f1d3f 0%, #2a254a 100%);
+  border-radius: 18px;
   cursor: pointer;
   position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0 5px;
+  border: 1.5px solid rgba(130, 88, 255, 0.3);
+  padding: 0 6px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(130, 88, 255, 0.1);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .toggle-label::before {
   content: '';
   position: absolute;
-  width: 24px; height: 24px;
+  width: 28px; height: 28px;
   border-radius: 50%;
-  background: #f5f7ff;
-  transition: 0.3s ease;
-  left: 2px;
+  background: linear-gradient(135deg, #f5f7ff 0%, #e8ebff 100%);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  left: 3px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .toggle-text {
   position: relative;
   z-index: 2;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 700;
-  opacity: 0.5;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
 }
 
 .toggle-text:nth-child(1)::before { content: 'C'; }
 .toggle-text:nth-child(2)::after { content: 'F'; }
 
-.toggle-checkbox:checked + .toggle-label { background: rgba(130, 88, 255, 0.3); }
-.toggle-checkbox:checked + .toggle-label::before { left: 34px; background: var(--accent); }
-.toggle-checkbox:checked + .toggle-label .toggle-text { opacity: 1; }
+.toggle-checkbox:checked + .toggle-label { 
+  background: linear-gradient(135deg, rgba(130, 88, 255, 0.4) 0%, rgba(100, 60, 255, 0.3) 100%);
+  border-color: rgba(130, 88, 255, 0.6);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 0 25px rgba(130, 88, 255, 0.2);
+}
+.toggle-checkbox:checked + .toggle-label::before { 
+  left: 3px; 
+  background: linear-gradient(135deg, var(--accent) 0%, #9970ff 100%);
+  box-shadow: 0 4px 15px rgba(130, 88, 255, 0.5);
+}
+.toggle-checkbox:checked + .toggle-label .toggle-text:nth-child(1) { opacity: 1; }
+.toggle-label .toggle-text:nth-child(2) { opacity: 0.9; }
+
+.location-pill::before {
+  content: '📍';
+  margin-right: 6px;
+  font-size: 14px;
+}
 
 .weather-icon { width: 85px; height: 85px; opacity: 0.8; }
 
@@ -194,6 +213,8 @@ body {
   display: flex;
   gap: 10px;
   border: 1px solid var(--card-border);
+  overflow-x: auto;
+  scroll-behavior: smooth;
 }
 
 .hour-pill {
@@ -260,7 +281,8 @@ body {
 .map-pin .label { font-size: 11px; color: #555; }
 
 @media (max-width: 1024px) {
-  .app-shell { grid-template-columns: 64px 1fr; padding: 16px; }
+  .app-shell { grid-template-columns: 1fr; padding: 16px; }
+  .sidebar { display: none; }
   .dashboard { grid-template-columns: 1fr; grid-template-rows: auto; }
   .today-card, .temp-map-card, .highlight-card, .today-week { grid-column: 1 / -1; }
   .temperature-value { font-size: 40px; }
@@ -268,4 +290,6 @@ body {
   .highlights-grid { grid-template-columns: repeat(2, 1fr); }
   .today-week-main { grid-template-columns: 1fr; }
   .map-box { height: 220px; }
+  .hourly-strip { overflow-x: auto; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+  .hour-pill { flex-shrink: 0; }
 }

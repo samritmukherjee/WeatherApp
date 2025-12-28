@@ -23,7 +23,7 @@ class WxApp {
     const tgl = document.getElementById("temp-toggle");
     if (tgl) {
       tgl.addEventListener("change", () => {
-        this.isC = tgl.checked;
+        this.isC = !tgl.checked;
         this.upT();
       });
     }
@@ -135,6 +135,20 @@ class WxApp {
     const mapVal = document.querySelector(".map-pin .value");
     if (mapVal) mapVal.textContent = Math.round(d.main.temp);
 
+    const dayEl = document.getElementById("day-name");
+    if (dayEl) {
+      const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const today = new Date();
+      dayEl.textContent = days[today.getDay()];
+    }
+
+    const dateEl = document.getElementById("current-date");
+    if (dateEl) {
+      const today = new Date();
+      const opts = { year: "numeric", month: "short", day: "numeric" };
+      dateEl.textContent = today.toLocaleDateString("en-US", opts);
+    }
+
     this.upH();
   }
 
@@ -146,15 +160,48 @@ class WxApp {
   upH() {
     if (!this.data) return;
     const list = this.data.fct.list;
-    const hT = document.querySelectorAll(".hour-pill .temp");
+    const hourlyStrip = document.getElementById("hourly-strip");
+    
+    if (hourlyStrip) {
+      const pills = hourlyStrip.querySelectorAll(".hour-pill");
+      
+      for (let i = 0; i < 6 && i < list.length && i < pills.length; i++) {
+        const f = list[i];
+        const temp = this.isC ? Math.round(f.main.temp) : Math.round((f.main.temp * 9 / 5) + 32);
+        
+        const timeEl = pills[i].querySelector(".hour-time");
+        if (timeEl) {
+          const date = new Date(f.dt * 1000);
+          const hours = date.getHours();
+          const ampm = hours >= 12 ? 'PM' : 'AM';
+          const displayHours = hours % 12 || 12;
+          timeEl.textContent = `${displayHours} ${ampm}`;
+        }
+        
+        const tempEl = pills[i].querySelector(".temp");
+        if (tempEl) tempEl.textContent = `${temp}°`;
+        
+        const ico = pills[i].querySelector(".hour-icon");
+        if (ico) {
+          ico.src = `https://openweathermap.org/img/wn/${f.weather[0].icon}@2x.png`;
+        }
+      }
+    }
 
-    for (let i = 0; i < 6 && i < list.length && i < hT.length; i++) {
-      const f = list[i];
-      const temp = this.isC ? Math.round(f.main.temp) : Math.round((f.main.temp * 9 / 5) + 32);
-      hT[i].textContent = `${temp}°`;
-      const ico = hT[i].closest(".hour-pill")?.querySelector(".hour-icon");
-      if (ico) {
-        ico.src = `https://openweathermap.org/img/wn/${f.weather[0].icon}@2x.png`;
+    if (list.length > 8) {
+      const tomorrow = list[8];
+      const tomorrowTemp = this.isC ? Math.round(tomorrow.main.temp) : Math.round((tomorrow.main.temp * 9 / 5) + 32);
+      const tomorrowCondition = tomorrow.weather[0].main;
+      
+      const condEl = document.getElementById("tomorrow-condition");
+      if (condEl) condEl.textContent = tomorrowCondition;
+      
+      const tempEl = document.getElementById("tomorrow-temp");
+      if (tempEl) tempEl.textContent = `${tomorrowTemp}°`;
+      
+      const iconEl = document.getElementById("tomorrow-icon");
+      if (iconEl) {
+        iconEl.src = `https://openweathermap.org/img/wn/${tomorrow.weather[0].icon}@2x.png`;
       }
     }
   }

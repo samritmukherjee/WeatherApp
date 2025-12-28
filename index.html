@@ -26,8 +26,8 @@
         <div class="card today-card">
           <div class="today-main">
             <div class="location-pill"><span>Howrah</span></div>
-            <h1>Monday</h1>
-            <div class="date">24 Dec, 2023</div>
+            <h1 id="day-name">Monday</h1>
+            <div class="date" id="current-date">24 Dec, 2023</div>
             <div class="temperature-row">
               <div class="temperature-value"><span class="temp-value">26</span>°<span class="temp-unit">C</span></div>
               <div class="hi-low">High: 27° Low: 10°</div>
@@ -63,13 +63,13 @@
         <div class="card today-week">
           <div class="today-week-header"><span>Today / Week</span></div>
           <div class="today-week-main">
-            <div class="hourly-strip">
-              <div class="hour-pill"><div>1 PM</div><img src="assets/images/icon-sun.svg" class="hour-icon"><div>20°</div></div>
-              <div class="hour-pill"><div>2 PM</div><img src="assets/images/icon-cloudy.svg" class="hour-icon"><div>21°</div></div>
-              <div class="hour-pill"><div>3 PM</div><img src="assets/images/icon-rain.svg" class="hour-icon"><div>20°</div></div>
-              <div class="hour-pill"><div>4 PM</div><img src="assets/images/icon-wind.svg" class="hour-icon"><div>19°</div></div>
-              <div class="hour-pill"><div>5 PM</div><img src="assets/images/icon-sun.svg" class="hour-icon"><div>18°</div></div>
-              <div class="hour-pill"><div>6 PM</div><img src="assets/images/icon-sun.svg" class="hour-icon"><div>18°</div></div>
+            <div class="hourly-strip" id="hourly-strip">
+              <div class="hour-pill"><div class="hour-time">1 PM</div><img src="assets/images/icon-sun.svg" class="hour-icon"><div class="temp">20°</div></div>
+              <div class="hour-pill"><div class="hour-time">2 PM</div><img src="assets/images/icon-cloudy.svg" class="hour-icon"><div class="temp">21°</div></div>
+              <div class="hour-pill"><div class="hour-time">3 PM</div><img src="assets/images/icon-rain.svg" class="hour-icon"><div class="temp">20°</div></div>
+              <div class="hour-pill"><div class="hour-time">4 PM</div><img src="assets/images/icon-wind.svg" class="hour-icon"><div class="temp">19°</div></div>
+              <div class="hour-pill"><div class="hour-time">5 PM</div><img src="assets/images/icon-sun.svg" class="hour-icon"><div class="temp">18°</div></div>
+              <div class="hour-pill"><div class="hour-time">6 PM</div><img src="assets/images/icon-sun.svg" class="hour-icon"><div class="temp">18°</div></div>
             </div>
             <div class="sunrise-card">
               <div class="sunrise-row">
@@ -77,8 +77,8 @@
                 <div><div class="sunrise-label">Sunset</div><div class="sunrise-value">5:30 PM</div></div>
               </div>
               <div class="tomorrow-strip">
-                <div><span class="tomorrow-label">Tomorrow</span><br><span>Rainy</span></div>
-                <div class="tomorrow-right"><span>14°</span><img src="assets/images/icon-rain.svg" class="tomorrow-icon"></div>
+                <div><span class="tomorrow-label">Tomorrow</span><br><span id="tomorrow-condition">Rainy</span></div>
+                <div class="tomorrow-right"><span id="tomorrow-temp">14°</span><img id="tomorrow-icon" src="assets/images/icon-rain.svg" class="tomorrow-icon"></div>
               </div>
             </div>
           </div>
