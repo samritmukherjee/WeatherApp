@@ -6,47 +6,27 @@
   <title>SkySense Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  
-  <!-- Load Environment Variables -->
   <script>
-    console.log('[INIT] Loading environment variables from env/.env');
     (async () => {
       try {
-        const envFile = './env/.env';
-        const response = await fetch(envFile);
+        const response = await fetch('./env/.env');
         const text = await response.text();
         window.__ENV = {};
-        
-        const lines = text.split('\n');
-        lines.forEach(line => {
-          const trimmed = line.trim();
-          if (trimmed && !trimmed.startsWith('#')) {
-            const [key, value] = trimmed.split('=');
-            if (key && value) {
-              window.__ENV[key.trim()] = value.trim();
-              console.log(`[ENV] Loaded: ${key.trim()}`);
-            }
-          }
+        text.split('\n').forEach(line => {
+          const [key, value] = line.trim().split('=');
+          if (key && value && !key.startsWith('#')) window.__ENV[key.trim()] = value.trim();
         });
-        
-        console.log('[INIT] Environment variables loaded:', window.__ENV);
-      } catch (e) {
-        console.warn('[ERROR] Failed to load env/.env file:', e);
-        console.warn('[WARNING] Using fallback API key. Make sure env/.env exists with OPENWEATHER_API_KEY');
-      }
+      } catch (e) { console.warn('Env load failed', e); }
     })();
   </script>
 </head>
 <body>
   <div class="app-shell">
-    <!-- Sidebar -->
     <aside class="sidebar">
       <img src="assets/images/side.svg" alt="Sidebar" class="sidebar-img">
     </aside>
 
-    <!-- Main Content -->
     <main class="main">
-      <!-- Top Bar -->
       <header class="topbar">
         <div class="user-pill">
           <img src="assets/images/username.svg" alt="User" class="user-icon">
@@ -55,152 +35,75 @@
         </div>
       </header>
 
-      <!-- Dashboard Grid -->
       <section class="dashboard">
-        <!-- Today Weather Card -->
         <div class="card today-card">
           <div class="today-main">
-            <div class="location-pill">
-              <span>Howrah</span>
-            </div>
+            <div class="location-pill"><span>Howrah</span></div>
             <h1>Monday</h1>
             <div class="date">24 Dec, 2023</div>
             <div class="temperature-row">
               <div class="temperature-value"><span class="temp-value">26</span>°<span class="temp-unit">C</span></div>
               <div class="hi-low">High: 27° Low: 10°</div>
             </div>
-            <div class="condition-label">Cloudy</div>
             <div class="feels-like">Feels like 26°</div>
-            <div class="today-bottom-icon">
-              <img src="assets/images/icon-cloudy.svg" alt="Cloudy">
-            </div>
           </div>
           <div class="today-right">
             <div class="unit-toggle">
               <input type="checkbox" id="temp-toggle" class="toggle-checkbox" checked>
               <label for="temp-toggle" class="toggle-label">
-                <span class="toggle-text">°C</span>
+                <span class="toggle-text"></span>
+                <span class="toggle-text"></span>
               </label>
             </div>
-            <div class="weather-illustration">
-              <img src="assets/images/icon-sun.svg" alt="Sun">
-            </div>
+            <img src="assets/images/icon-cloudy.svg" class="weather-icon">
           </div>
         </div>
 
-        <!-- Highlights Card -->
         <div class="card highlight-card">
-          <div class="highlight-header">
-            <h2>Today Highlight</h2>
-          </div>
+          <div class="highlight-header"><h2>Today Highlight</h2></div>
           <div class="highlights-grid">
-            <div class="mini-card">
-              <div class="mini-label">Wind</div>
-              <div class="mini-main">9.7 km/h</div>
-              <div class="mini-sub">N  E  S</div>
-            </div>
-            <div class="mini-card">
-              <div class="mini-label">Rainfall</div>
-              <div class="mini-main">1.8 mm</div>
-              <div class="mini-sub">in last hour</div>
-            </div>
-            <div class="mini-card">
-              <div class="mini-label">Pressure</div>
-              <div class="mini-main">1012 hPa</div>
-              <div class="mini-sub">Stable</div>
-            </div>
+            <div class="mini-card"><div class="mini-label">Wind</div><div class="mini-main">9.7 km/h</div><div class="mini-sub">N E S</div></div>
+            <div class="mini-card"><div class="mini-label">Rainfall</div><div class="mini-main">1.8 mm</div><div class="mini-sub">in last hour</div></div>
+            <div class="mini-card"><div class="mini-label">Pressure</div><div class="mini-main">1012 hPa</div><div class="mini-sub">Stable</div></div>
             <div class="mini-card" style="grid-column: span 2;">
-              <div class="mini-label">Air Quality</div>
-              <div class="mini-main">3 � Low Health Risk</div>
+              <div class="mini-label">Air Quality</div><div class="mini-main">3 Low Risk</div>
               <div class="air-quality-bar"><span></span></div>
             </div>
-            <div class="mini-card">
-              <div class="mini-label">Visibility</div>
-              <div class="mini-main">8 km</div>
-              <div class="mini-sub">Clear sky</div>
-            </div>
+            <div class="mini-card"><div class="mini-label">Visibility</div><div class="mini-main">8 km</div><div class="mini-sub">Clear sky</div></div>
           </div>
         </div>
 
-        <!-- Hourly & Sunrise Card -->
         <div class="card today-week">
-          <div class="today-week-header">
-            <span>Today / Week</span>
-          </div>
+          <div class="today-week-header"><span>Today / Week</span></div>
           <div class="today-week-main">
             <div class="hourly-strip">
-              <div class="hour-pill">
-                <div class="time">1 PM</div>
-                <img src="assets/images/icon-sun.svg" alt="Sun" class="hour-icon">
-                <div class="temp">20°</div>
-              </div>
-              <div class="hour-pill">
-                <div class="time">2 PM</div>
-                <img src="assets/images/icon-sun.svg" alt="Sun" class="hour-icon">
-                <div class="temp">21°</div>
-              </div>
-              <div class="hour-pill">
-                <div class="time">3 PM</div>
-                <img src="assets/images/icon-sun.svg" alt="Sun" class="hour-icon">
-                <div class="temp">20°</div>
-              </div>
-              <div class="hour-pill">
-                <div class="time">4 PM</div>
-                <img src="assets/images/icon-sun.svg" alt="Sun" class="hour-icon">
-                <div class="temp">19°</div>
-              </div>
-              <div class="hour-pill">
-                <div class="time">5 PM</div>
-                <img src="assets/images/icon-sun.svg" alt="Sun" class="hour-icon">
-                <div class="temp">18°</div>
-              </div>
-              <div class="hour-pill">
-                <div class="time">6 PM</div>
-                <img src="assets/images/icon-sun.svg" alt="Sun" class="hour-icon">
-                <div class="temp">18°</div>
-              </div>
+              <div class="hour-pill"><div>1 PM</div><img src="assets/images/icon-sun.svg" class="hour-icon"><div>20°</div></div>
+              <div class="hour-pill"><div>2 PM</div><img src="assets/images/icon-cloudy.svg" class="hour-icon"><div>21°</div></div>
+              <div class="hour-pill"><div>3 PM</div><img src="assets/images/icon-rain.svg" class="hour-icon"><div>20°</div></div>
+              <div class="hour-pill"><div>4 PM</div><img src="assets/images/icon-wind.svg" class="hour-icon"><div>19°</div></div>
+              <div class="hour-pill"><div>5 PM</div><img src="assets/images/icon-sun.svg" class="hour-icon"><div>18°</div></div>
+              <div class="hour-pill"><div>6 PM</div><img src="assets/images/icon-sun.svg" class="hour-icon"><div>18°</div></div>
             </div>
             <div class="sunrise-card">
               <div class="sunrise-row">
-                <div>
-                  <div class="sunrise-label">Sunrise</div>
-                  <div class="sunrise-value">6:45 AM</div>
-                </div>
-                <div>
-                  <div class="sunrise-label">Sunset</div>
-                  <div class="sunrise-value">5:30 PM</div>
-                </div>
+                <div><div class="sunrise-label">Sunrise</div><div class="sunrise-value">6:45 AM</div></div>
+                <div><div class="sunrise-label">Sunset</div><div class="sunrise-value">5:30 PM</div></div>
               </div>
               <div class="tomorrow-strip">
-                <div class="tomorrow-left">
-                  <span class="tomorrow-label">Tomorrow</span>
-                  <span>Rainy</span>
-                </div>
-                <div class="tomorrow-right">
-                  <span>14°</span>
-                  <img src="assets/images/icon-rain.svg" alt="Rain" class="tomorrow-icon">
-                </div>
+                <div><span class="tomorrow-label">Tomorrow</span><br><span>Rainy</span></div>
+                <div class="tomorrow-right"><span>14°</span><img src="assets/images/icon-rain.svg" class="tomorrow-icon"></div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Temperature Map Card -->
         <div class="card temp-map-card">
           <h2>Temperature</h2>
-          <div class="map-box">
-            <div class="map-inner">
-              <div class="map-pin">
-                <span class="value">21</span>
-                <span class="label">My Location</span>
-              </div>
-            </div>
-          </div>
+          <div class="map-box"><div class="map-inner"><div class="map-pin"><span class="value">21</span><span class="label">My Location</span></div></div></div>
         </div>
       </section>
     </main>
   </div>
-
   <script src="app.js"></script>
 </body>
 </html>
