@@ -19,6 +19,64 @@ class WxApp {
     return "e2171af7c43b9eb3f9417fc352f3d504";
   }
 
+  async getUserLocation() {
+    return new Promise((resolve) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            this.lat = position.coords.latitude;
+            this.lon = position.coords.longitude;
+            console.log(`User Location: Lat ${this.lat}, Lon ${this.lon}`);
+            
+            await this.getLocationName();
+            resolve();
+          },
+          (error) => {
+            console.log("Geolocation error, using default location (Kolkata):", error);
+            resolve(); // Continue with Kolkata as default
+          }
+        );
+      } else {
+        console.log("Geolocation not supported, using default location (Kolkata)");
+        resolve(); // Continue with Kolkata as default
+      }
+    });
+  }
+
+  async getLocationName() {
+    try {
+      const response = await fetch(
+        `https://api.openweathermap.org/geo/1.0/reverse?lat=${this.lat}&lon=${this.lon}&limit=1&appid=${this.key}`
+      );
+      
+      if (response.ok) {
+        const data = await response.json();
+        if (data && data.length > 0) {
+          this.loc = data[0].name;
+          console.log("[SUCCESS] Location Successfully Detected");
+          console.log(`[LOCATION] City: ${this.loc}`);
+          console.log(`[COORDINATES] Lat ${this.lat.toFixed(4)}, Lon ${this.lon.toFixed(4)}`);
+          
+          // Update location pill in UI
+          const locationPill = document.querySelector(".location-pill span");
+          if (locationPill) {
+            locationPill.textContent = this.loc;
+          }
+        } else {
+          console.log("[WARNING] No location found, using default location (Kolkata)");
+          console.log(`[COORDINATES] Lat ${this.lat}, Lon ${this.lon}`);
+        }
+      } else {
+        console.log("[WARNING] Geocoding API error, using default location (Kolkata)");
+        console.log(`[COORDINATES] Lat ${this.lat}, Lon ${this.lon}`);
+      }
+    } catch (e) {
+      console.log("[WARNING] Geocoding error:", e.message);
+      console.log("[LOCATION] Using default location: Kolkata");
+      console.log(`[COORDINATES] Default Lat ${this.lat}, Lon ${this.lon}`);
+    }
+  }
+
   async init() {
     const tgl = document.getElementById("temp-toggle");
     if (tgl) {
@@ -27,16 +85,22 @@ class WxApp {
         this.upT();
       });
     }
+    // Get user's current location
+    await this.getUserLocation();
     await this.fetchAll();
     this.upT();
   }
 
   async fetchAll() {
-    console.log("API Called");
+    console.log("[INFO] API Called");
     try {
       const wUrl = `https://api.openweathermap.org/data/2.5/weather?q=${this.loc}&units=metric&appid=${this.key}`;
       const fUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${this.loc}&units=metric&appid=${this.key}`;
       const aUrl = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${this.lat}&lon=${this.lon}&appid=${this.key}`;
+
+      console.log("[API] Weather URL:", wUrl);
+      console.log("[API] Forecast URL:", fUrl);
+      console.log("[API] Air Pollution URL:", aUrl);
 
       const [wRes, fRes, aRes] = await Promise.all([
         fetch(wUrl),
@@ -45,7 +109,8 @@ class WxApp {
       ]);
 
       if (!wRes.ok || !fRes.ok || !aRes.ok) {
-        console.log("Failed to fetch API data");
+        console.log("[ERROR] Failed to fetch API data");
+        console.log(`[WARNING] Using Mock/Default Weather Data for ${this.loc}`);
         this.useMockData = true;
         this.data = this.getMockData();
         this.upMain();
@@ -62,10 +127,12 @@ class WxApp {
         aqi: aData.list[0]
       };
 
-      console.log("API Data Successfully Fetched");
+      console.log("[SUCCESS] API Data Successfully Fetched for " + this.loc);
       this.upMain();
     } catch (e) {
-      console.log("Failed to fetch API data");
+      console.log("[ERROR] Failed to fetch API data");
+      console.log("[WARNING] Using Mock/Default Weather Data for " + this.loc);
+      console.log("[ERROR] Details:", e.message);
       this.useMockData = true;
       this.data = this.getMockData();
       this.upMain();
